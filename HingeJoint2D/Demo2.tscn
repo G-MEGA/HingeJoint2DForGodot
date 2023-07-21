@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=3 uid="uid://dvd4f7ws4vxjj"]
+
+[ext_resource type="Script" path="res://HingeJoint2D.gd" id="1_xt2kp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mgj0o"]
+size = Vector2(16, 102)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sma2h"]
+size = Vector2(20, 92)
+
+[sub_resource type="GDScript" id="GDScript_w3os5"]
+script/source = "extends AnimatableBody2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _physics_process(_delta):
+	global_position = get_global_mouse_position()
+	pass
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wfbm7"]
+radius = 32.0624
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g23mk"]
+size = Vector2(2058, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p6iu6"]
+size = Vector2(92, 699)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Ragdoll" type="Node2D" parent="."]
+
+[node name="Arm_R" type="RigidBody2D" parent="Ragdoll"]
+position = Vector2(561, 291)
+collision_layer = 2
+mass = 20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ragdoll/Arm_R"]
+shape = SubResource("RectangleShape2D_mgj0o")
+debug_color = Color(1, 1, 1, 1)
+
+[node name="Arm_R+Forearm_R" type="PinJoint2D" parent="Ragdoll"]
+position = Vector2(563, 334)
+node_a = NodePath("../Arm_R")
+node_b = NodePath("../Forearm_R")
+script = ExtResource("1_xt2kp")
+lower_limit = -1.571
+
+[node name="Forearm_R" type="RigidBody2D" parent="Ragdoll"]
+position = Vector2(562, 379)
+collision_layer = 2
+mass = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ragdoll/Forearm_R"]
+shape = SubResource("RectangleShape2D_sma2h")
+debug_color = Color(0.921569, 0, 0, 1)
+
+[node name="MousePhysics" type="AnimatableBody2D" parent="."]
+position = Vector2(1055, 55)
+script = SubResource("GDScript_w3os5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MousePhysics"]
+shape = SubResource("CircleShape2D_wfbm7")
+
+[node name="Map" type="StaticBody2D" parent="."]
+position = Vector2(568, 634)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map"]
+shape = SubResource("RectangleShape2D_g23mk")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Map"]
+position = Vector2(0, -691)
+shape = SubResource("RectangleShape2D_g23mk")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Map"]
+position = Vector2(-579, -321.5)
+shape = SubResource("RectangleShape2D_p6iu6")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Map"]
+position = Vector2(602, -321.5)
+shape = SubResource("RectangleShape2D_p6iu6")
